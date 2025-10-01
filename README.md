@@ -86,8 +86,8 @@ tg_exp = TrafficGenerator(df, distribution="exponential", lam=0.5)
 ## Métricas y Análisis
 
 ### Rendimiento de Caché
-Hit Rate: Porcentaje de aciertos en caché
-Miss Rate: Porcentaje de fallos en caché
+Hit Rate: Porcentaje de aciertos en caché  
+Miss Rate: Porcentaje de fallos en caché  
 Tiempo promedio de respuesta
 
 ### Calidad de Respuestas
@@ -97,7 +97,6 @@ Comparativa LLM vs Respuestas Humanas
 ## Estructura del Proyecto ARREGLAAAR
 ```bash
 ├── distri_base.py          # Código principal del sistema
-├── test.csv               # Dataset de Yahoo! Answers
 ├── queries.db             # Base de datos SQLite (generada)
 ├── README.md              # Este archivo
 └── requirements.txt       # Dependencias de Python CAMBIARCAMBIARCAMBIARCAMBIAAAAAAAAR
