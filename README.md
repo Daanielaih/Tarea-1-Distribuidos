@@ -55,7 +55,7 @@ export GEMINI_API_KEY= [En comentarios de la entrega]
 # Colocar test.csv en el directorio raíz
 
 # 5. Ejecutar el sistema
-python distri_base.py
+./run sh
 ```
 
 ## Configuración del sistema
@@ -96,8 +96,13 @@ Comparativa LLM vs Respuestas Humanas
 
 ## Estructura del Proyecto
 ```bash
-├── distri_base.py          # Código principal del sistema
-├── README.md              # Este archivo
+├── distri_base.py
+├──dockerfile
+├──queries.db
+├──question_index
+├──requirements.txt
+├──run.sh         
+├── README.md              
 ```
 
 
