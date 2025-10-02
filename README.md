@@ -63,7 +63,7 @@ python distri_base.py
 
 ```bash
 # Tamaño de caché
-CACHE_SIZE = 100
+CACHE_SIZE = 10
 
 # Política de remoción: "LRU" o "LFU"
 CACHE_POLICY = "LRU"
@@ -94,12 +94,11 @@ Tiempo promedio de respuesta
 Similitud de Coseno: Score entre 0-1 que mide similitud semántica
 Comparativa LLM vs Respuestas Humanas
 
-## Estructura del Proyecto ARREGLAAAR
+## Estructura del Proyecto
 ```bash
 ├── distri_base.py          # Código principal del sistema
 ├── queries.db             # Base de datos SQLite (generada)
 ├── README.md              # Este archivo
-└── requirements.txt       # Dependencias de Python CAMBIARCAMBIARCAMBIARCAMBIAAAAAAAAR
 ```
 
 
