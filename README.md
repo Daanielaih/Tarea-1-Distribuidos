@@ -97,7 +97,6 @@ Comparativa LLM vs Respuestas Humanas
 ## Estructura del Proyecto
 ```bash
 ├── distri_base.py          # Código principal del sistema
-├── queries.db             # Base de datos SQLite (generada)
 ├── README.md              # Este archivo
 ```
 
