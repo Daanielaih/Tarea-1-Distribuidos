@@ -17,9 +17,12 @@ import pandas as pd
 import google.generativeai as genai
 import numpy as np
 import random
+import os
 
-
-genai.configure(api_key="AIzaSyA5aNjtIegCftM67zsC8ahEgGlEISbcmVc")
+api_key = os.getenv("GOOGLE_API_KEY")
+if not api_key:
+    raise RuntimeError("La variable de entorno GOOGLE_API_KEY no está definida. Antes de ejecutar el contenedor exporta tu API key.")
+genai.configure(api_key=api_key)
 
 #dataset
 df = pd.read_csv(
@@ -81,7 +84,7 @@ print(f"\n Similitud (coseno): {score:.4f}")
 📊 Opciones de distribuciones
 1. Uniforme (discreta)
 
-Cómo funciona: Cada interarrival (tiempo entre llegadas) se elige al azar dentro de un rango fijo, por ejemplo entre 1 y 5 segundos.
+Cómo funciona: cada interarrival (tiempo entre llegadas) se elige al azar dentro de un rango fijo, por ejemplo entre 1 y 5 segundos.
 
 
 Características:
@@ -333,7 +336,7 @@ def insert_or_update(conn, query):
 
 # Suponiendo que ya tienes df cargado
 gen = TrafficGenerator(df, distribution="uniform", seed=None)  # None = aleatorio
-traffic_df = gen.generate_queries(n_queries=5)  # genera 20 consultas simuladas
+traffic_df = gen.generate_queries(n_queries=10000)  # genera 20 consultas simuladas
 
 # Conexión ya creada
 c = conn.cursor()
@@ -343,7 +346,9 @@ c.execute("SELECT question_index FROM queries")
 existing_indices = set(row[0] for row in c.fetchall())
 
 # traffic_df es tu DataFrame generado
-traffic_df = traffic_df[~traffic_df['index'].isin(existing_indices)]
+
+#procesamos todas las consultas
+#traffic_df = traffic_df[~traffic_df['index'].isin(existing_indices)]
 
 for _, query in traffic_df.iterrows():
     key = query['index']
@@ -383,6 +388,38 @@ for _, query in traffic_df.iterrows():
         "score": score
     }
     insert_or_update(conn, query_data)
+
+
+if __name__ == "__main__":
+    n_queries = 30
+    cache_size = 10
+    scenarios = [
+        ("LRU", "uniform"),
+        ("LRU", "exponential"),
+        ("LFU", "uniform"),
+        ("LFU", "exponential"),
+    ]
+
+    for policy, dist in scenarios:
+        print("="*50)
+        print(f"Escenario: Policy={policy}, Distribución={dist}")
+        cache = Cache(max_size=cache_size, policy=policy)
+        tg = TrafficGenerator(df, distribution=dist, seed=42)
+        traffic = tg.generate_queries(n_queries)
+
+        for _, q in traffic.iterrows():
+            key = int(q['index'])
+            val = cache.get(key)
+            if val is None:
+                # miss -> simulamos guardar respuesta
+                cache.put(key, f"resp_{key}")
+
+        stats = cache.stats()
+        print(f"Consultas totales: {n_queries}")
+        print(f"Hits:   {stats['hits']}")
+        print(f"Misses: {stats['misses']}")
+        print(f"Hit rate:  {stats['hit_rate']:.3f}")
+        print(f"Miss rate: {stats['miss_rate']:.3f}")
 
 import pandas as pd
 pd.read_sql("SELECT * FROM queries", conn)
