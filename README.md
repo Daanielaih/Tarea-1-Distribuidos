@@ -13,7 +13,7 @@ Sistema distribuido para comparar y analizar la calidad de respuestas generadas 
 
 ### Sistema de Caché
 - Implementa políticas **LRU** (Least Recently Used) y **LFU** (Least Frequently Used)
-- Tamaño configurable (default: 100 elementos)
+- Tamaño configurable (default: 10 elementos)
 - Soporte para TTL (Time To Live)
 - Optimización de respuestas frecuentes
 
